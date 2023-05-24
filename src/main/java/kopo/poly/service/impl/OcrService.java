@@ -24,6 +24,8 @@ public class OcrService implements IOcrService {
 
         instance.setDatapath(IOcrService.modelFile);
 
+
+
         instance.setLanguage("eng");
 
         String result = instance.doOCR(resource.getFile());

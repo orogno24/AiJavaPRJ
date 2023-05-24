@@ -14,5 +14,7 @@ public class OcrDTO {
     private String result;
 
 
-    
+
+
+
 }
