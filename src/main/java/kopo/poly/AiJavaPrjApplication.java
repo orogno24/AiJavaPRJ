@@ -97,6 +97,8 @@ public class AiJavaPrjApplication implements CommandLineRunner {
             log.info("DB에 저장된 주소 : " + dto.getAddr());
         });
 
+        studentService.delStudent(pDTO);
+
         log.info("자바 프로그래밍 종료!!");
     }
 }

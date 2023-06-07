@@ -25,4 +25,9 @@
         WHERE USER_ID = #{userId}
     </select>
 
+    <delete id="delStudent" parameterType="StudentDTO">
+        DELETE FROM STUDENT
+        WHERE USER_ID = #{userId}
+    </delete>
+
 </mapper>
