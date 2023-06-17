@@ -18,6 +18,30 @@ public class StudentService implements IStudentService {
 
     private final IStudentMapper studentMapper;
 
+
+
+    @Override
+    public List<StudentDTO> insertStudentList (List<StudentDTO> pList) throws Exception {
+
+        log.info(this.getClass().getName() + ".insertStudent Start!");
+
+        pList.forEach(dto -> {
+            try {
+                this.insertStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        List<StudentDTO> rList = Optional.ofNullable(
+                studentMapper.getStudentList()
+        ).orElseGet(ArrayList::new);
+
+        log.info(this.getClass().getName() + ".insertStudent End!");
+
+        return rList;
+    }
+
     @Override
     public List<StudentDTO> insertStudent(StudentDTO pDTO) throws Exception {
 
@@ -33,13 +57,13 @@ public class StudentService implements IStudentService {
             }
 
             // 학생 테이블 전체 조회하기
-            List<StudentDTO> rList = Optional.ofNullable(
+            List<StudentDTO> pList = Optional.ofNullable(
                     studentMapper.getStudentList()
             ).orElseGet(ArrayList::new);
 
             log.info(this.getClass().getName() + ".insertStudent End!");
 
-            return rList;
+            return pList;
         }
 
     @Override
@@ -56,14 +80,38 @@ public class StudentService implements IStudentService {
             studentMapper.delStudent(pDTO); // 학생 등록 SQL 실행하기
         }
 
-        List<StudentDTO> rList = Optional.ofNullable(
+        List<StudentDTO> pList = Optional.ofNullable(
                 studentMapper.getStudentList()
         ).orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".delStudent End!");
 
-        return rList;
+        return pList;
     }
+
+    @Override
+    public List<StudentDTO> updateStudent(StudentDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".updateStudent Start!");
+
+        Optional<StudentDTO> res = Optional.ofNullable(studentMapper.getStudent(pDTO));
+
+        if (res.isPresent()){ // DB 조회 결과로 회원아이디가 존재하지 않는다면..
+            studentMapper.updateStudent(pDTO); // 학생 등록 SQL 실행하기
+            log.info(pDTO.getUserId() + "님이 수정되었습니다.");
+        } else {
+            log.info("회원이 존재하지 않아 수정되지 못했습니다.");
+
+        }
+
+        // 학생 테이블 전체 조회하기
+        List<StudentDTO> pList = Optional.ofNullable(studentMapper.getStudentList()).orElseGet(ArrayList::new);
+
+        log.info(this.getClass().getName() + ".updateStudent End!");
+
+        return pList;
+    }
+
 }
 
 

@@ -10,16 +10,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor // 2. 여기 빈칸뚫어놓고 쓰라고 합니다
 @SpringBootApplication
 public class AiJavaPrjApplication implements CommandLineRunner {
 
    private final IOcrService ocrService;
    private final INlpService nlpService;
-   private final IStudentService studentService;
+   private final IStudentService studentService; //여기도 빈칸뚫어놓음
 
     public static void main(String[] args) {
 
@@ -83,12 +84,46 @@ public class AiJavaPrjApplication implements CommandLineRunner {
         //학생 등록하기
         pDTO = new StudentDTO();
 
-        pDTO.setUserId("hglee67");
-        pDTO.setUserName("이협건");
-        pDTO.setEmail("hglee67@kopo.ac.kr");
-        pDTO.setAddr("서울");
+//        pDTO.setUserId("hglee67");
+//        pDTO.setUserName("이협건");
+//        pDTO.setEmail("hglee67@kopo.ac.kr");
+//        pDTO.setAddr("서울");
+//
+//        rList = studentService.insertStudent(pDTO);
+//
+//        rList.forEach(dto -> {
+//            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+//            log.info("DB에 저장된 이름 : " + dto.getUserName());
+//            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+//            log.info("DB에 저장된 주소 : " + dto.getAddr());
+//        });
 
-        rList = studentService.insertStudent(pDTO);
+
+        List<StudentDTO> pList = new ArrayList<>();
+
+        for(int i = 0; i <= 4; i++){
+            pDTO = new StudentDTO();
+            pDTO.setUserId("A" + i);
+            pDTO.setUserName("B" + i);
+            pDTO.setEmail("C" + i);
+            pDTO.setAddr( i + " ");
+            pList.add(pDTO);
+        }
+
+        log.info(pList + "");
+        rList = studentService.insertStudentList(pList);
+
+
+
+        //학생 수정하기
+//        pDTO = new StudentDTO();
+//
+//        pDTO.setUserId("hglee67");
+//        pDTO.setUserName("이협건_수정");
+//        pDTO.setEmail("hglee67@kopo.ac.kr_수정");
+//        pDTO.setAddr("서울_수정");
+//
+//        rList = studentService.updateStudent(pDTO);
 
         rList.forEach(dto -> {
             log.info("DB에 저장된 아이디 : " + dto.getUserId());
@@ -97,7 +132,20 @@ public class AiJavaPrjApplication implements CommandLineRunner {
             log.info("DB에 저장된 주소 : " + dto.getAddr());
         });
 
-        studentService.delStudent(pDTO);
+
+        //학생 삭제하기
+        pDTO = new StudentDTO();
+
+        pDTO.setUserId("hglee67");
+
+        rList = studentService.delStudent(pDTO);
+
+        rList.forEach(dto -> {
+            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+            log.info("DB에 저장된 이름 : " + dto.getUserName());
+            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+            log.info("DB에 저장된 주소 : " + dto.getAddr());
+        });
 
         log.info("자바 프로그래밍 종료!!");
     }

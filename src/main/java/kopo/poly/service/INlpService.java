@@ -9,4 +9,5 @@ public interface INlpService {
     NlpDTO getNouns(String text);
 
 
+
 }
